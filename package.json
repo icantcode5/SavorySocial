@@ -7,7 +7,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "nodemon",
 		"start": "ts-node-esm src/server.ts",
-		"build": "cd frontend && ci && npm run build",
+		"build": "cd Client && ci && npm run build",
 		"buildTSC": "tsc"
 	},
 	"author": "",
