@@ -1,5 +1,5 @@
 import { FormEvent, ChangeEvent, useState } from "react"
-
+import Axios from "axios"
 // type FormObject = {
 // 	name : string
 // }
@@ -20,6 +20,11 @@ function Login() {
 	const submitForm = (e: FormEvent) => {
 		e.preventDefault()
 		console.log(formValues)
+		Axios.get("http://localhost:3000/api/users/register")
+			.then((response) => {
+				console.log(response.data)
+			})
+			.catch((err) => console.log(err))
 	}
 
 	const inputChange = (e: ChangeEvent<HTMLInputElement>) => {
