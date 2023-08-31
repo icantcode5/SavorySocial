@@ -2,17 +2,21 @@ import { Link } from "react-router-dom"
 
 function Header() {
 	return (
-		<header className=" flex bg-red-400 flex-row justify-between">
-			<h1 className="text-base">
+		<header className=" flex flex-row justify-between items-center h-16">
+			<h1 className="text-lg ml-2.5 font-medium  ">
 				SavorySocial! A social platform to share and find receipes!
 			</h1>
 			<div className="">
 				<ul className=" flex justify-between">
 					<li className="mr-2.5">
-						<Link to="/login">Login</Link>
+						<Link className="text-white" to="/login">
+							Login
+						</Link>
 					</li>
 					<li className="mr-2.5">
-						<Link to="/register">Register</Link>
+						<Link className="text-white" to="/register">
+							Register
+						</Link>
 					</li>
 				</ul>
 			</div>
