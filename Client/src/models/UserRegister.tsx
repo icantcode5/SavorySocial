@@ -1,13 +1,8 @@
 import { z, ZodType } from "zod"
 
-type FormData = {
-	name: string
-	email: string
-	password: string
-	confirmedPassword: string
-}
+type FormType = z.infer<typeof UserRegisterSchema>
 
-const UserRegisterSchema: ZodType<FormData> = z
+const UserRegisterSchema: ZodType = z
 	.object({
 		name: z.string().trim().min(2, { message: "Must be 2 characters or more" }),
 		email: z.string().trim().email().toLowerCase(),
@@ -25,4 +20,4 @@ const UserRegisterSchema: ZodType<FormData> = z
 		path: ["confirmedPassword"],
 	})
 
-export { UserRegisterSchema, type FormData }
+export { UserRegisterSchema, type FormType }
