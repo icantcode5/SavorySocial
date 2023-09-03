@@ -4,7 +4,9 @@ function Header() {
 	return (
 		<header className=" flex flex-row justify-between items-center h-16">
 			<h1 className="text-lg ml-2.5 font-medium  ">
-				SavorySocial! A social platform to share and find receipes!
+				<Link className="text-white" to="/">
+					SavorySocial! A social platform to share and find receipes!
+				</Link>
 			</h1>
 			<div className="">
 				<ul className=" flex justify-between">

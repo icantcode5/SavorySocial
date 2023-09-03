@@ -1,5 +1,5 @@
 import Header from "../components/Header"
-
+import Axios from "axios"
 //Form Validation
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -14,8 +14,16 @@ function Register() {
 		formState: { errors },
 	} = useForm<FormType>({ resolver: zodResolver(UserRegisterSchema) })
 
-	const formSubmit = (data: FormType) => {
-		console.log(data)
+	const formSubmit = async (userData: FormType) => {
+		try {
+			const response = await Axios.post(
+				"http://localhost:3000/api/user/register",
+				userData
+			)
+			console.log(response.data)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	return (
@@ -34,9 +42,9 @@ function Register() {
 						{errors.name && <span>{errors.name.message?.toString()}</span>}
 						<input
 							type="email"
-							name="email"
 							placeholder="Email"
 							className="min-w-full mt-4 rounded-lg h-8 pl-2"
+							{...register("email")}
 						/>
 						{errors.email && <span>{errors.email.message?.toString()}</span>}
 						<input
@@ -44,7 +52,7 @@ function Register() {
 							placeholder="Password"
 							className="min-w-full mt-4
 					    rounded-lg h-8 pl-2"
-							{...register("email")}
+							{...register("password")}
 						/>
 						{errors.password && (
 							<span>{errors.password.message?.toString()}</span>

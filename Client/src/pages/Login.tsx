@@ -1,5 +1,5 @@
 import Header from "../components/Header"
-
+import Axios from "axios"
 //Form Validation
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -16,8 +16,12 @@ function Login() {
 		resolver: zodResolver(UserLoginSchema),
 	})
 
-	const formSubmit = (data: FormType) => {
-		console.log(data)
+	const formSubmit = async (userData: FormType) => {
+		const response = await Axios.post(
+			"http://localhost:3000/api/user/login",
+			userData
+		)
+		console.log(response.data)
 	}
 
 	return (
