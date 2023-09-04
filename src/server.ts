@@ -6,6 +6,7 @@ import { Pool } from "pg"
 
 //Routes
 import userRoutes from "./routes/user"
+import feedRoutes from "./routes/feed"
 
 dotenv.config({ path: "./src/config/.env" })
 
@@ -28,7 +29,6 @@ const databaseConnection = async () => {
 	}
 }
 databaseConnection()
-
 //Serve Client files when running in production
 if (process.env.NODE_ENV === "production") {
 	app.get("*", (req, res) => {
@@ -37,6 +37,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use("/api/user", userRoutes)
+app.use("/api/feed", feedRoutes)
 
 app.listen(process.env.PORT, () => {
 	console.log(`Server is running on port ${process.env.PORT}`)
