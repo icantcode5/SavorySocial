@@ -14,7 +14,7 @@ function Register() {
 		formState: { errors },
 	} = useForm<FormType>({ resolver: zodResolver(UserRegisterSchema) })
 
-	const formSubmit = async (userData: FormType) => {
+	const formSubmit = async (userData: FormType): Promise<void> => {
 		try {
 			const response = await Axios.post(
 				"http://localhost:3000/api/user/register",
