@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { Pool } from "pg"
+import bcrypt from "bcrypt"
 
 //prettier-ignore
 export async function registerUser(request: Request, response: Response):Promise<void> {
@@ -12,13 +13,43 @@ export async function registerUser(request: Request, response: Response):Promise
 
 	try {
 		client = await pool.connect()
+
+		if(!name || !email  || !password){
+			response.status(400)
+			throw new Error("Make Sure all fields are filled out.")
+		}
+
+		//Check if user exists through email
+		const userQuery = "SELECT * FROM users WHERE email = $1"
+		const values = [email]
+		const userExists = await client.query(userQuery, values)
+
+		//Since postgresql will return a truthy statement for the response we get from querying the db, we have to check the specific information we get back which in our case is the table and the information inside that table ergo array of objects.
+		if(userExists.rows[0]){
+			response.status(400).send("A user with that email already Exists")
+			throw new Error("User already exists")
+		}
+
+
+		//No user exists and we have the information we need so we move onto encrypting the password.
+		//hash password
+		const salt = await bcrypt.genSalt(10)
+		const hashedPassword = await bcrypt.hash(password, salt)
+
+		//Password has been hashed so we can now save the user data to the DB
+
 		//result from DB is returned in an array of objects representing each row entry as an object
-		const result = await client.query(
-			"INSERT INTO users(name, email, password) VALUES ($1,$2,$3)",
-			[name, email, password]
+		const user = await client.query(
+			"INSERT INTO users(name, email, password) VALUES ($1,$2,$3) RETURNING id",
+			[name, email, hashedPassword]
 		)
 
-		response.status(200).send("User Successfully created!")
+		//Once the user has been created successfully, we use can now send create the refresh token and access token and send them to the http cookie header for authentication.
+		if(user.rows[0].id){
+			response.cookie("accessToken" , user.rows[0] )
+		}
+		response.status(200).send("User Successfully created!" )
+
 	} catch (error) {
 		console.log("controller error", error)
 	} finally {
