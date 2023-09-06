@@ -46,7 +46,13 @@ export async function registerUser(request: Request, response: Response):Promise
 
 		//Once the user has been created successfully, we use can now send create the refresh token and access token and send them to the http cookie header for authentication.
 		if(user.rows[0].id){
-			response.cookie("accessToken" , user.rows[0] )
+			response.cookie("accessToken" , user.rows[0].id, {
+				httpOnly: true,
+					secure: process.env.NODE_ENV !== "development",
+					sameSite: "strict",
+					maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days - stars off in milliseconds
+					path: "/",
+			} )
 		}
 		response.status(200).send("User Successfully created!" )
 
