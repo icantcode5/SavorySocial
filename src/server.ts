@@ -11,7 +11,7 @@ import feedRoutes from "./routes/feed"
 dotenv.config({ path: "./src/config/.env" })
 
 const app = express()
-app.use(cors())
+app.use(cors({ origin: true })) //Have to look more into this. Works differently in other app.
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 

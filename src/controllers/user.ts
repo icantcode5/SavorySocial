@@ -1,6 +1,10 @@
 import { Request, Response } from "express"
 import { Pool } from "pg"
 import bcrypt from "bcrypt"
+import {
+	generateAccessToken,
+	generateRefreshToken,
+} from "../utils/generateTokens"
 
 //prettier-ignore
 export async function registerUser(request: Request, response: Response):Promise<void> {
@@ -46,7 +50,7 @@ export async function registerUser(request: Request, response: Response):Promise
 
 		//Once the user has been created successfully, we use can now send create the refresh token and access token and send them to the http cookie header for authentication.
 		if(user.rows[0].id){
-			response.cookie("accessToken" , user.rows[0].id, {
+			response.cookie("accessToken" , generateAccessToken(user.rows[0].id) , {
 				httpOnly: true,
 					secure: process.env.NODE_ENV !== "development",
 					sameSite: "strict",
@@ -54,10 +58,11 @@ export async function registerUser(request: Request, response: Response):Promise
 					path: "/",
 			} )
 		}
-		response.status(200).send("User Successfully created!" )
+		//201 defines request was successful and a resource was created
+		response.status(201).send("User Successfully created!" )
 
 	} catch (error) {
-		console.log("controller error", error)
+		console.log(error)
 	} finally {
 		client?.release()
 	}
@@ -66,19 +71,38 @@ export async function registerUser(request: Request, response: Response):Promise
 //prettier-ignore
 export async function loginUser(request: Request, response: Response): Promise<void> {
 	const { email, password } = request.body
-	const query = "SELECT * FROM users WHERE email = $1"
-	const values = [email]
+	let client
 
 	const pool = new Pool({
 		connectionString: process.env.DB_CONNECTION_STRING,
 	})
 
 	try {
-		const client = await pool.connect()
+		 client = await pool.connect()
+
+		 if(!email  || !password){
+			response.status(400)
+			throw new Error("Make Sure all fields are filled out.")
+		}
+
+		//Find user
+		const query = "SELECT * FROM users WHERE email = $1"
+		const values = [email]
 		const result = await client.query(query, values)
+
+		const userPassword = result.rows[0].password
+		const userID = result.rows[0].id
+
+		if(userID && await bcrypt.compare(password, userPassword)){
+			const userId = result.rows[0]
+			const accessToken = generateAccessToken(userID)
+			const refreshToken = generateRefreshToken(userID)
+		}
 		//send method here automatically sends the data as JSON format and axios in the frontend automatically parses it to use as soon as it is received.
 		response.status(200).send(result.rows)
 	} catch (error) {
 		console.log(error)
+	}finally{
+		client?.release()
 	}
 }
