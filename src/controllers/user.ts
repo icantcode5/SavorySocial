@@ -44,13 +44,13 @@ export async function registerUser(request: Request, response: Response):Promise
 
 		//result from DB is returned in an array of objects representing each row entry as an object
 		const user = await client.query(
-			"INSERT INTO users(name, email, password) VALUES ($1,$2,$3) RETURNING id",
+			"INSERT INTO users(name, email, password) VALUES ($1,$2,$3) RETURNING user_id",
 			[name, email, hashedPassword]
 		)
 
 		//Once the user has been created successfully, we use can now send create the refresh token and access token and send them to the http cookie header for authentication.
-		if(user.rows[0].id){
-			response.cookie("accessToken" , generateAccessToken(user.rows[0].id) , {
+		if(user.rows[0].user_id){
+			response.cookie("accessToken" , generateAccessToken(user.rows[0].user_id) , {
 				httpOnly: true,
 					secure: process.env.NODE_ENV !== "development",
 					sameSite: "strict",
@@ -86,17 +86,21 @@ export async function loginUser(request: Request, response: Response): Promise<v
 		}
 
 		//Find user
-		const query = "SELECT * FROM users WHERE email = $1"
+		const userQuery = "SELECT * FROM users WHERE email = $1"
 		const values = [email]
-		const result = await client.query(query, values)
-
+		const result = await client.query(userQuery, values)
 		const userPassword = result.rows[0].password
-		const userID = result.rows[0].id
+		const userID = result.rows[0].user_id
 
 		if(userID && await bcrypt.compare(password, userPassword)){
-			const userId = result.rows[0]
+			const userId = result.rows[0] //user found
 			const accessToken = generateAccessToken(userID)
 			const refreshToken = generateRefreshToken(userID)
+
+			//Token query and values
+			const tokenQuery = "INSERT INTO refresh_tokens(refresh_token) VALUES ($1)"
+			const tokenValue = [refreshToken]
+			const addRefreshTokenToDB = await client.query(tokenQuery, tokenValue)
 		}
 		//send method here automatically sends the data as JSON format and axios in the frontend automatically parses it to use as soon as it is received.
 		response.status(200).send(result.rows)

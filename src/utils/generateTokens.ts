@@ -24,5 +24,3 @@ export function generateRefreshToken(id: Number) {
 		expiresIn: "7d",
 	})
 }
-
-//IMPLEMENT THE GENERATE token function for register user controller!
