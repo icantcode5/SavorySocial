@@ -93,18 +93,41 @@ export async function loginUser(request: Request, response: Response): Promise<v
 		const userID = result.rows[0].user_id
 
 		if(userID && await bcrypt.compare(password, userPassword)){
-			const userId = result.rows[0] //user found
+			// const userId = result.rows[0] //user found
 			const accessToken = generateAccessToken(userID)
 			const refreshToken = generateRefreshToken(userID)
 
 			//Token query and values
-			const tokenQuery = "INSERT INTO refresh_tokens(refresh_token) VALUES ($1)"
-			const tokenValue = [refreshToken]
-			const addRefreshTokenToDB = await client.query(tokenQuery, tokenValue)
+			const tokenQuery = "INSERT INTO refresh_tokens(refresh_token, user_id) VALUES ($1, $2)"
+			const tokenValue = [refreshToken, userID]
+			const addRefreshTokenToDB = await client.query(tokenQuery, tokenValue) //MAYBE SHOULD BE WRAPPED IN IF STATEMENT
+
+			response
+					.cookie("accessToken", accessToken, {
+						httpOnly: true,
+						secure: process.env.NODE_ENV !== "development",
+						sameSite: "strict",
+						maxAge: 7 * 24 * 60 * 60 * 1000,
+						path: "/",
+					})
+					.cookie("refreshToken", refreshToken, {
+						httpOnly: true,
+						secure: process.env.NODE_ENV !== "development",
+						sameSite: "strict",
+						maxAge: 7 * 24 * 60 * 60 * 1000,
+						path: "/",
+					})
+			//send method here automatically sends the data as JSON format and axios in the frontend automatically parses it to use as soon as it is received.
+			const arrayWithoutPassword = result.rows.map((obj) => ({user_id: obj.user_id, name: obj.name, email:obj.email }))
+			response.status(200).send(arrayWithoutPassword)
+		}else{
+			response
+					.status(400)
+					.send("Please make sure email and password are correct") //client error, request will not be completed
+				throw new Error("User Not Found")
 		}
-		//send method here automatically sends the data as JSON format and axios in the frontend automatically parses it to use as soon as it is received.
-		response.status(200).send(result.rows)
 	} catch (error) {
+		response.status(400)
 		console.log(error)
 	}finally{
 		client?.release()
