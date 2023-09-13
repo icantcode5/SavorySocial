@@ -120,6 +120,7 @@ export async function loginUser(request: Request, response: Response): Promise<v
 			//send method here automatically sends the data as JSON format and axios in the frontend automatically parses it to use as soon as it is received.
 			const arrayWithoutPassword = result.rows.map((obj) => ({user_id: obj.user_id, name: obj.name, email:obj.email }))
 			response.status(200).send(arrayWithoutPassword)
+			console.log("successfully signed in!")
 		}else{
 			response
 					.status(400)

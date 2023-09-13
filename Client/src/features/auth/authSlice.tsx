@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit/react"
+import { createSlice } from "@reduxjs/toolkit/react"
 
 // type reduxState = {
 // 	user: Array<object>

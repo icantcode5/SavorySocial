@@ -21,16 +21,17 @@ function Login() {
 	})
 
 	const formSubmit = async (userData: FormType) => {
-		try {
-			const response = await Axios.post(
-				"http://localhost:3000/api/user/login",
-				userData
-			)
-			console.log(response.data)
-			navigate("/feed")
-		} catch (error) {
-			console.log(error)
-		}
+		// try {
+		// 	const response = await Axios.post(
+		// 		"http://localhost:3000/api/user/login",
+		// 		userData
+		// 	)
+		// 	console.log(response.data)
+		// 	navigate("/feed")
+		// } catch (error) {
+		// 	console.log(error)
+		// }
+		userLogin({ userData })
 	}
 
 	return (
