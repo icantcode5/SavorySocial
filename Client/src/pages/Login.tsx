@@ -4,12 +4,12 @@ import Axios from "axios"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { UserLoginSchema, FormType } from "../models/UserLogin"
-import { useNavigate } from "react-router-dom"
-import { useUserLoginMutation } from "../features/auth/authService"
+// import { useNavigate } from "react-router-dom"
+import { useUserLoginMutation } from "../features/auth/apiSlice"
 //	TODO : app is setup so now I have to work on setting up the pages and figure out flow of the recipe app. Can start with home page + login and register page
 
 function Login() {
-	const navigate = useNavigate()
+	// const navigate = useNavigate()
 	const [userLogin] = useUserLoginMutation()
 
 	const {
@@ -21,17 +21,8 @@ function Login() {
 	})
 
 	const formSubmit = async (userData: FormType) => {
-		// try {
-		// 	const response = await Axios.post(
-		// 		"http://localhost:3000/api/user/login",
-		// 		userData
-		// 	)
-		// 	console.log(response.data)
-		// 	navigate("/feed")
-		// } catch (error) {
-		// 	console.log(error)
-		// }
-		userLogin({ userData })
+		//A promise life cycle object is created which handles the asynchronous part of the request
+		userLogin(userData)
 	}
 
 	return (

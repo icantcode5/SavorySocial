@@ -72,6 +72,8 @@ export async function registerUser(request: Request, response: Response):Promise
 export async function loginUser(request: Request, response: Response): Promise<void> {
 	const { email, password } = request.body
 	let client
+	console.log(email)
+	console.log(password)
 
 	const pool = new Pool({
 		connectionString: process.env.DB_CONNECTION_STRING,
