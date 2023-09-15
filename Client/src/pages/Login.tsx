@@ -1,16 +1,17 @@
 import Header from "../components/Header"
-import Axios from "axios"
+// import Axios from "axios"
 //Form Validation
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { UserLoginSchema, FormType } from "../models/UserLogin"
-// import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useUserLoginMutation } from "../features/auth/apiSlice"
 //	TODO : app is setup so now I have to work on setting up the pages and figure out flow of the recipe app. Can start with home page + login and register page
 
 function Login() {
-	// const navigate = useNavigate()
-	const [userLogin] = useUserLoginMutation()
+	const navigate = useNavigate()
+	const [userLogin, { isLoading }] = useUserLoginMutation()
+	console.log(isLoading)
 
 	const {
 		register,
@@ -22,7 +23,13 @@ function Login() {
 
 	const formSubmit = async (userData: FormType) => {
 		//A promise life cycle object is created which handles the asynchronous part of the request
-		userLogin(userData)
+		try {
+			const response = await userLogin(userData).unwrap() //.unwrap() allows us access the payload or error of our mutation call
+			navigate("/feed")
+			console.log(response)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	return (
