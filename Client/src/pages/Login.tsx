@@ -25,8 +25,8 @@ function Login() {
 		//A promise life cycle object is created which handles the asynchronous part of the request
 		try {
 			const response = await userLogin(userData).unwrap() //.unwrap() allows us access the payload or error of our mutation call
-			navigate("/feed")
 			console.log(response)
+			navigate("/feed")
 		} catch (error) {
 			console.log(error)
 		}
