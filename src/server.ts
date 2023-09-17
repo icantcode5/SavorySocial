@@ -7,11 +7,13 @@ import { Pool } from "pg"
 //Routes
 import userRoutes from "./routes/user"
 import feedRoutes from "./routes/feed"
+import cookieParser from "cookie-parser"
 
 dotenv.config({ path: "./src/config/.env" })
 
 const app = express()
-app.use(cors({ origin: true })) //Have to look more into this. Works differently in other app.
+app.use(cookieParser())
+app.use(cors({ credentials: true, origin: "http://localhost:5173" })) //Have to look more into this. Works differently in other app.
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 

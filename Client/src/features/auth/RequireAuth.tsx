@@ -1,9 +1,10 @@
 import { Outlet, Navigate } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 function RequireAuth() {
-	const userLoggedIn = true
+	const { token } = useSelector((state) => state.auth)
 
-	return userLoggedIn ? <Outlet /> : <Navigate to={"/login"} />
+	return token ? <Outlet /> : <Navigate to={"/login"} />
 }
 
 export { RequireAuth }

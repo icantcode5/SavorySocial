@@ -6,10 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { UserLoginSchema, FormType } from "../models/UserLogin"
 import { useNavigate } from "react-router-dom"
 import { useUserLoginMutation } from "../features/auth/apiSlice"
-//	TODO : app is setup so now I have to work on setting up the pages and figure out flow of the recipe app. Can start with home page + login and register page
+import { useDispatch } from "react-redux"
+import { setCredentials } from "../features/auth/authSlice"
 
 function Login() {
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
 	const [userLogin, { isLoading }] = useUserLoginMutation()
 	console.log(isLoading)
 
@@ -25,9 +27,11 @@ function Login() {
 		//A promise life cycle object is created which handles the asynchronous part of the request
 		try {
 			const response = await userLogin(userData).unwrap() //.unwrap() allows us access the payload or error of our mutation call
-			console.log(response)
+			dispatch(setCredentials(response[0]))
+			console.log(response[0])
 			navigate("/feed")
 		} catch (error) {
+			//SET UP ERROR MESSAGES INCASE LOGIN FUNCTION DIDN'T WORK AND DISPLAY TO USER
 			console.log(error)
 		}
 	}
