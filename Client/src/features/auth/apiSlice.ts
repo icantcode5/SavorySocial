@@ -5,14 +5,14 @@ export const authApi = createApi({
 	baseQuery: fetchBaseQuery({
 		baseUrl: "http://localhost:3000",
 		credentials: "include",
-		prepareHeaders: (headers, { getState }) => {
-			const token = getState().auth.token
-			console.log(token)
-			if (token) {
-				headers.set("authorization", `Bearer ${token}`)
-			}
-			return headers
-		},
+		// prepareHeaders: (headers, { getState }) => {
+		// 	const token = getState().auth.token
+		// 	console.log(token)
+		// 	if (token) {
+		// 		headers.set("authorization", `Bearer ${token}`)
+		// 	}
+		// 	return headers
+		// },
 	}),
 	tagTypes: ["userAuth"],
 	endpoints: (builder) => ({

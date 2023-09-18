@@ -135,4 +135,45 @@ export async function loginUser(request: Request, response: Response): Promise<v
 	}finally{
 		client?.release()
 	}
+
+}
+
+//prettier-ignore
+export async function logOutUser(request:Request, response:Response):Promise<void> {
+	let client
+
+		const pool = new Pool({
+		connectionString: process.env.DB_CONNECTION_STRING,
+	})
+	try {
+		client = await pool.connect()
+		const refreshToken = request.cookies.refreshToken
+		console.log(refreshToken)
+		//prettier-ignore
+		const query = "DELETE FROM refresh_tokens WHERE refresh_token = $1"
+		const value = [refreshToken]
+		const deleteRefreshTokenFromDB = await client.query(query,value)
+		
+		if(deleteRefreshTokenFromDB){
+			response
+			.clearCookie("refreshToken", {
+				httpOnly: true,
+				secure: process.env.NODE_ENV !== "development",
+				sameSite: "strict",
+				maxAge: 7 * 24 * 60 * 60 * 1000,
+				path: "/",
+			})
+			.clearCookie("accessToken", {
+				httpOnly: true,
+				secure: process.env.NODE_ENV !== "development",
+				sameSite: "strict",
+				maxAge: 7 * 24 * 60 * 60 * 1000,
+				path: "/",
+			})
+		response.status(200).json({ message: "user logged out" })
+		}
+		
+	} catch (error) {
+		console.log(error)
+	}
 }

@@ -20,6 +20,11 @@ function Header() {
 							Register
 						</Link>
 					</li>
+					<li className="mr-2.5">
+						<Link className="text-white" to="/login">
+							Logout
+						</Link>
+					</li>
 				</ul>
 			</div>
 		</header>
