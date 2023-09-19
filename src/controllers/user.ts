@@ -140,6 +140,7 @@ export async function loginUser(request: Request, response: Response): Promise<v
 
 //prettier-ignore
 export async function logOutUser(request:Request, response:Response):Promise<void> {
+	console.log("hit logout in backend")
 	let client
 
 		const pool = new Pool({
@@ -148,13 +149,13 @@ export async function logOutUser(request:Request, response:Response):Promise<voi
 	try {
 		client = await pool.connect()
 		const refreshToken = request.cookies.refreshToken
-		console.log(refreshToken)
 		//prettier-ignore
 		const query = "DELETE FROM refresh_tokens WHERE refresh_token = $1"
 		const value = [refreshToken]
 		const deleteRefreshTokenFromDB = await client.query(query,value)
 		
 		if(deleteRefreshTokenFromDB){
+			console.log("successfully deleted refresh token")
 			response
 			.clearCookie("refreshToken", {
 				httpOnly: true,
@@ -170,10 +171,12 @@ export async function logOutUser(request:Request, response:Response):Promise<voi
 				maxAge: 7 * 24 * 60 * 60 * 1000,
 				path: "/",
 			})
-		response.status(200).json({ message: "user logged out" })
+		response.status(200).send({message : "user logged out"})
 		}
 		
 	} catch (error) {
 		console.log(error)
+	}finally{
+		client?.release()
 	}
 }

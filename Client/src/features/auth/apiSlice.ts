@@ -33,11 +33,11 @@ export const authApi = createApi({
 			}),
 			invalidatesTags: ["userAuth"],
 		}),
-		userLogout: builder.mutation({
-			query: (userID) => ({
-				url: "/api/user/logout",
+		userLogOut: builder.mutation({
+			query: (body) => ({
+				url: "/api/user/logOut",
 				method: "DELETE",
-				body: userID,
+				body: body,
 			}),
 			invalidatesTags: ["userAuth"],
 		}),
@@ -47,5 +47,5 @@ export const authApi = createApi({
 export const {
 	useUserLoginMutation,
 	useUserRegisterMutation,
-	useUserLogoutMutation,
+	useUserLogOutMutation,
 } = authApi
