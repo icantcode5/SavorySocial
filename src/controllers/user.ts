@@ -140,15 +140,15 @@ export async function loginUser(request: Request, response: Response): Promise<v
 
 //prettier-ignore
 export async function logOutUser(request:Request, response:Response):Promise<void> {
-	console.log("hit logout in backend")
 	let client
+	const { refreshToken } = request.cookies
 
 		const pool = new Pool({
 		connectionString: process.env.DB_CONNECTION_STRING,
 	})
 	try {
 		client = await pool.connect()
-		const refreshToken = request.cookies.refreshToken
+		
 		//prettier-ignore
 		const query = "DELETE FROM refresh_tokens WHERE refresh_token = $1"
 		const value = [refreshToken]

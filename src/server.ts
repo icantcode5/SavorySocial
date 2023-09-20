@@ -2,12 +2,13 @@ import express from "express"
 import cors from "cors"
 import path from "path"
 import dotenv from "dotenv"
+import cookieParser from "cookie-parser"
 import { Pool } from "pg"
 
 //Routes
 import userRoutes from "./routes/user"
 import feedRoutes from "./routes/feed"
-import cookieParser from "cookie-parser"
+import refreshTokenRoute from "./routes/refreshToken"
 
 dotenv.config({ path: "./src/config/.env" })
 
@@ -40,6 +41,7 @@ if (process.env.NODE_ENV === "production") {
 
 app.use("/api/user", userRoutes)
 app.use("/api/feed", feedRoutes)
+app.use("/api/refreshToken", refreshTokenRoute)
 
 app.listen(process.env.PORT, () => {
 	console.log(`Server is running on port ${process.env.PORT}`)
