@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken"
 
 //Access Token
 const accessTokenString = String(process.env.ACCESS_SECRET)
@@ -13,13 +13,13 @@ if (!refreshTokenString) {
 	throw new Error("ENV refresh token secret variable is undefined")
 }
 
-export function generateAccessToken(id: Number) {
+export function generateAccessToken(id: any) {
 	return jwt.sign({ id }, accessTokenString, {
 		expiresIn: "1d",
 	})
 }
-//Refresh Token
-export function generateRefreshToken(id: Number) {
+//Refresh Token (FIX ARGUMENT TYPES)
+export function generateRefreshToken(id: any) {
 	return jwt.sign({ id }, refreshTokenString, {
 		expiresIn: "7d",
 	})

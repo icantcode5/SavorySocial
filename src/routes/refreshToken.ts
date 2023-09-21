@@ -3,6 +3,6 @@ import { getRefreshToken } from "../controllers/refreshToken"
 
 const router = Router()
 
-router.get("/refreshToken", getRefreshToken)
+router.get("/", getRefreshToken)
 
 export default router
