@@ -5,41 +5,13 @@ export const baseQuery = fetchBaseQuery({
 	baseUrl: "http://localhost:3000",
 	credentials: "include",
 })
-// tagTypes: ["userAuth"]
-// endpoints: (builder) => ({
-// 	//Query method on builder is a basic "GET" method, for all other http requests with changing data, we need to call the mutation method on builder.
-// 	userLogin: builder.mutation({
-// 		query: (userData) => ({
-// 			url: "/api/user/login",
-// 			method: "POST",
-// 			body: userData,
-// 		}),
-// 		invalidatesTags: ["userAuth"],
-// 	}),
-// 	userRegister: builder.mutation({
-// 		query: (userData) => ({
-// 			url: "/api/user/login",
-// 			method: "POST",
-// 			body: userData,
-// 		}),
-// 		invalidatesTags: ["userAuth"],
-// 	}),
-// 	userLogOut: builder.mutation({
-// 		query: (body) => ({
-// 			url: "/api/user/logOut",
-// 			method: "DELETE",
-// 			body: body,
-// 		}),
-// 		invalidatesTags: ["userAuth"],
-// 	}),
-//  }),
 
 //Custom Query function syntax
 const baseQueryWithReAuth = async (args, api, extraOptions) => {
 	let result = await baseQuery(args, api, extraOptions)
 
 	//prettier-ignore
-	if(result?.error.originalStatus === 403){
+	if(result?.error?.originalStatus === 403){
 		console.log("sending refresh token")
 		const refreshResult = await baseQuery("/api/refreshToken", api, extraOptions)
 		console.log(refreshResult)
@@ -61,9 +33,3 @@ export const apiSlice = createApi({
 	baseQuery: baseQueryWithReAuth,
 	endpoints: (builder) => ({}),
 })
-
-// export const {
-// 	useUserLoginMutation,
-// 	useUserRegisterMutation,
-// 	useUserLogOutMutation,
-// } = authApi

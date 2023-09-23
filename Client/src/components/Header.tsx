@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { useUserLogOutMutation } from "../features/auth/apiSlice"
+import { useUserLogOutMutation } from "../features/auth/authApiSlice"
 import { logOut } from "../features/auth/authSlice"
 
 function Header() {

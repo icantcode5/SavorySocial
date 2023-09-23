@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { UserLoginSchema, FormType } from "../models/UserLogin"
 import { useNavigate } from "react-router-dom"
-import { useUserLoginMutation } from "../features/auth/apiSlice"
+import { useUserLoginMutation } from "../features/auth/authApiSlice"
 import { useDispatch } from "react-redux"
 import { setCredentials } from "../features/auth/authSlice"
 
