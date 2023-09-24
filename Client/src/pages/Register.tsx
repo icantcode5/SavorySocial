@@ -1,13 +1,19 @@
 import Header from "../components/Header"
-import Axios from "axios"
 //Form Validation
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { UserRegisterSchema, FormType } from "../models/UserRegister"
+import { useUserRegisterMutation } from "../features/auth/authApiSlice"
+import { setCredentials } from "../features/auth/authSlice"
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 //	TODO : app is setup so now I have to work on setting up the pages and figure out flow of the recipe app. Can start with home page + login and register page
 
 function Register() {
+	const [userRegister, { isLoading }] = useUserRegisterMutation()
+	const navigate = useNavigate()
+	const dispatch = useDispatch()
 	const {
 		register,
 		handleSubmit,
@@ -16,13 +22,13 @@ function Register() {
 
 	const formSubmit = async (userData: FormType): Promise<void> => {
 		try {
-			const response = await Axios.post(
-				"http://localhost:3000/api/user/register",
-				userData
-			)
-			console.log(response.data)
+			const response = await userRegister(userData).unwrap()
+			dispatch(setCredentials(response[0]))
+			console.log(response)
+			navigate("/feed")
 		} catch (error) {
 			console.log(error)
+			//ADJUST ERRORS TO HANDLE API QUERY/MUTATION
 		}
 	}
 

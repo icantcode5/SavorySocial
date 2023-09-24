@@ -13,7 +13,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 		}),
 		userRegister: builder.mutation({
 			query: (userData) => ({
-				url: "/api/user/login",
+				url: "/api/user/register",
 				method: "POST",
 				body: userData,
 			}),

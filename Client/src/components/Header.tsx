@@ -2,11 +2,13 @@ import { Link, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { useUserLogOutMutation } from "../features/auth/authApiSlice"
 import { logOut } from "../features/auth/authSlice"
+import { useSelector } from "react-redux"
 
 function Header() {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const [userLogOut, { isLoading }] = useUserLogOutMutation()
+	const user = useSelector((state) => state.auth.user)
 
 	const logOutUser = async () => {
 		try {
@@ -40,12 +42,16 @@ function Header() {
 							Register
 						</Link>
 					</li>
-					<li
+
+					{
+						//prettier-ignore
+						user ? <li
 						className="mr-2.5 text-white font-medium  cursor-pointer"
 						onClick={logOutUser}
 					>
 						Logout
-					</li>
+					</li> : ""
+					}
 				</ul>
 			</div>
 		</header>
