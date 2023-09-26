@@ -8,7 +8,7 @@ function Header() {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const [userLogOut, { isLoading }] = useUserLogOutMutation()
-	const user = useSelector((state) => state.auth.user)
+	const user = useSelector((state) => state.auth.user) //COMING BACK TO THIS
 
 	const logOutUser = async () => {
 		try {
@@ -24,37 +24,40 @@ function Header() {
 	}
 
 	return (
-		<header className=" flex flex-row justify-between items-center h-16">
-			<h1 className="text-lg ml-2.5 font-medium  ">
-				<Link className="text-white" to="/">
-					SavorySocial! A social platform to share and find receipes!
-				</Link>
-			</h1>
-			<div className="">
-				<ul className=" flex justify-between">
-					<li className="mr-2.5">
-						<Link className="text-white" to="/login">
-							Login
-						</Link>
-					</li>
-					<li className="mr-2.5">
-						<Link className="text-white" to="/register">
-							Register
-						</Link>
-					</li>
+		<>
+			<header className=" flex flex-row justify-between items-center h-16">
+				<h1 className="text-lg ml-2.5 font-medium  ">
+					<Link className="text-white" to="/">
+						SavorySocial! A social platform to share and find receipes!
+					</Link>
+				</h1>
+				<div className="">
+					<ul className=" flex justify-between">
+						<li className="mr-2.5">
+							<Link className="text-white" to="/login">
+								Login
+							</Link>
+						</li>
+						<li className="mr-2.5">
+							<Link className="text-white" to="/register">
+								Register
+							</Link>
+						</li>
 
-					{
-						//prettier-ignore
-						user ? <li
-						className="mr-2.5 text-white font-medium  cursor-pointer"
+						{
+							//prettier-ignore
+							user ? <li
+						className="mr-2.5 text-white font-medium cursor-pointer hover:text-blue-600"
 						onClick={logOutUser}
 					>
 						Logout
 					</li> : ""
-					}
-				</ul>
-			</div>
-		</header>
+						}
+					</ul>
+				</div>
+			</header>
+			{/* {children} */}
+		</>
 	)
 }
 

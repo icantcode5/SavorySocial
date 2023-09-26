@@ -18,7 +18,7 @@ app.use(cors({ credentials: true, origin: "http://localhost:5173" })) //Have to 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-//DB connection test
+//DB connection
 const databaseConnection = async () => {
 	const pool = new Pool({
 		connectionString: process.env.DB_CONNECTION_STRING,
