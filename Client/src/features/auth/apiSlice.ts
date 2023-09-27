@@ -1,13 +1,47 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { setCredentials, logOut } from "./authSlice"
+import { BaseQueryFn } from "@reduxjs/toolkit/query"
 
-export const baseQuery = fetchBaseQuery({
+const simpleBaseQuery: BaseQueryFn<
+	string, // Args
+	unknown, // Result
+	{ reason: string }, // Error
+	{ shout?: boolean }, // DefinitionExtraOptions
+	{ timestamp: number } // Meta
+> = (arg, api, extraOptions) => {
+	// `arg` has the type `string`
+	// `api` has the type `BaseQueryApi` (not configurable)
+	// `extraOptions` has the type `{ shout?: boolean }
+
+	const meta = { timestamp: Date.now() }
+
+	if (arg === "forceFail") {
+		return {
+			error: {
+				reason: "Intentionally requested to fail!",
+				meta,
+			},
+		}
+	}
+
+	if (extraOptions.shout) {
+		return { data: "CONGRATULATIONS", meta }
+	}
+
+	return { data: "congratulations", meta }
+}
+
+export const baseQuery: typeof simpleBaseQuery = fetchBaseQuery({
 	baseUrl: "http://localhost:3000",
 	credentials: "include",
 })
 
 //Custom Query function syntax
-const baseQueryWithReAuth = async (args, api, extraOptions) => {
+const baseQueryWithReAuth: typeof simpleBaseQuery = async (
+	args,
+	api,
+	extraOptions
+) => {
 	let result = await baseQuery(args, api, extraOptions)
 
 	//prettier-ignore

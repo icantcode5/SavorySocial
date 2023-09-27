@@ -3,12 +3,13 @@ import { useDispatch } from "react-redux"
 import { useUserLogOutMutation } from "../features/auth/authApiSlice"
 import { logOut } from "../features/auth/authSlice"
 import { useSelector } from "react-redux"
+import { RootState } from "../app/store"
 
 function Header() {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const [userLogOut, { isLoading }] = useUserLogOutMutation()
-	const user = useSelector((state) => state.auth.user) //COMING BACK TO THIS
+	const user = useSelector((state: RootState) => state.auth.user) //COMING BACK TO THIS
 
 	const logOutUser = async () => {
 		try {

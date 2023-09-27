@@ -6,12 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { UserLoginSchema, FormType } from "../models/UserLogin"
 import { useNavigate } from "react-router-dom"
 import { useUserLoginMutation } from "../features/auth/authApiSlice"
-import { useDispatch } from "react-redux"
+import { useAppDispatch } from "../types/Redux.types"
 import { setCredentials } from "../features/auth/authSlice"
 
 function Login() {
 	const navigate = useNavigate()
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const [userLogin, { isLoading }] = useUserLoginMutation()
 	console.log(isLoading)
 

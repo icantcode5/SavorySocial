@@ -1,18 +1,36 @@
-import { createSlice } from "@reduxjs/toolkit/react"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit/react"
+
+type User = {
+	user_id: string
+	email: string
+	accessToken: string
+	name: string
+}
+
+const initialState = {
+	user: {
+		user_id: "",
+		name: "",
+		email: "",
+		accessToken: "",
+	},
+}
 
 const authSlice = createSlice({
 	name: "auth",
-	initialState: { user: null, token: null },
+	initialState: initialState,
 	reducers: {
-		setCredentials: (state, action) => {
-			const { accessToken } = action.payload
-			const { newAccessToken } = action.payload
+		//prettier-ignore
+		setCredentials: (state, action :PayloadAction<User>) => {
 			state.user = action.payload
-			state.token = accessToken || newAccessToken
 		},
 		logOut: (state) => {
-			state.user = null
-			state.token = null
+			state.user = {
+				user_id: "",
+				name: "",
+				email: "",
+				accessToken: "",
+			}
 		},
 	},
 })
