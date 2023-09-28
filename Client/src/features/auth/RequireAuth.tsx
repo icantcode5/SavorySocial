@@ -4,6 +4,7 @@ import { RootState } from "../../app/store"
 
 function RequireAuth() {
 	const { accessToken } = useSelector((state: RootState) => state.auth.user)
+	console.log(accessToken)
 
 	return accessToken ? <Outlet /> : <Navigate to={"/login"} />
 }

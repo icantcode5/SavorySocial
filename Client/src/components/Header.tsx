@@ -47,7 +47,7 @@ function Header() {
 
 						{
 							//prettier-ignore
-							user ? <li
+							user.user_id ? <li
 						className="mr-2.5 text-white font-medium cursor-pointer hover:text-blue-600"
 						onClick={logOutUser}
 					>
