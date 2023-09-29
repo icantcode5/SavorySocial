@@ -9,7 +9,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				method: "POST",
 				body: userData,
 			}),
-			// invalidatesTags: ["userAuth"],
+			// providesTags : ["userAuth"],
+			invalidatesTags: ["userAuth"],
 		}),
 		userRegister: builder.mutation({
 			query: (userData) => ({
@@ -17,7 +18,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				method: "POST",
 				body: userData,
 			}),
-			// invalidatesTags: ["userAuth"],
+			invalidatesTags: ["userAuth"],
 		}),
 		userLogOut: builder.mutation({
 			query: (body) => ({
@@ -25,7 +26,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				method: "DELETE",
 				body: body,
 			}),
-			// invalidatesTags: ["userAuth"],
+			invalidatesTags: ["userAuth"],
 		}),
 	}),
 })

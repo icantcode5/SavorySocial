@@ -12,40 +12,40 @@ export const baseQuery: BaseQueryFn = fetchBaseQuery({
 	credentials: "include",
 })
 
-//Type for the custom base query function. This is the usual boiler plate code with undefined added
+// Type for the custom base query function. This is the usual boiler plate code with undefined added
 type BaseQueryFnCustom<
 	Args = unknown,
 	Result = unknown,
 	Error = unknown,
-	DefintionExtraOptions = object,
-	Meta = object
+	DefintionExtraOptions = object
+	// Meta = object
 > = (
 	args: Args,
 	api: BaseQueryApi,
 	extraOptions: DefintionExtraOptions
-) => MaybePromise<QueryReturnValue<Result, Error, Meta> | undefined>
+) => MaybePromise<QueryReturnValue<Result, Error>>
 
 //Common pattern in typescript for handling synchronous and asynchronous values
 type MaybePromise<T> = T | Promise<T>
 
 type QueryReturnValue<
 	Data = unknown,
-	Error = unknown,
-	Meta = object | undefined
+	Error = unknown
+	// Meta = undefined | object
 > = {
 	data?: Data
 	error?: Error
 	isLoading: boolean
 	isSuccess: boolean
 	isError: boolean
-	meta?: Meta
+	// meta?: Meta
 }
 
 //Custom Query function syntax
 //prettier-ignore
 const baseQueryWithReAuth: BaseQueryFnCustom = async (args, api , extraOptions) => {
 	try {
-		let result = await baseQuery(args, api, extraOptions)
+		const result = await baseQuery(args, api, extraOptions)
 		//prettier-ignore
 		console.log(result?.error)
 		if(result?.error === 403){
@@ -59,21 +59,39 @@ const baseQueryWithReAuth: BaseQueryFnCustom = async (args, api , extraOptions) 
 			const user = getState2.auth.user 
 			api.dispatch(setCredentials({...refreshResult.data, ...user}))
 			//retry original query with new access token since it's on pause while we react to the message and create a new access token if our refresh token is still valid meaning our logged in session is still valid
-			result = await baseQuery(args, api, extraOptions)
+			return {
+				data: await baseQuery(args, api, extraOptions),
+				isLoading: false,
+				isError: false,
+				isSuccess : true
+			};
 	} 
-
 		else{
 			api.dispatch(logOut())
+			throw new Error("Log out due to refresh failure")
 		} 
 			}else{
-		return undefined
+		// return result ? {...result, meta:undefined} : undefined
+		return {
+			data : result?.data,
+			isLoading: false,
+			isSuccess: true,
+			isError: false,
+		};
 		}
 	} catch (e) {
 		console.log(e)
+		const errorMessage = e instanceof Error ? e.message : "An error occurred";
+		return { isError: true, isLoading: false, isSuccess: false, error: errorMessage };
 	}
 }
 
+// type CustomBaseQueryFn = BaseQueryFnCustom<unknown, unknown, unknown, object>
+
 export const apiSlice = createApi({
-	baseQuery: baseQueryWithReAuth,
+	baseQuery: baseQueryWithReAuth as BaseQueryFn,
 	endpoints: (builder) => ({}),
+	tagTypes: ["userAuth"], // add the tagtype to reference in endpoints specifically used as mutations to delete cache and reload them to update them
 })
+
+//providesTags: [] is for queries as invalidatesTags:[] is for mutations!
