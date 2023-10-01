@@ -43,7 +43,7 @@ type QueryReturnValue<
 
 //Custom Query function syntax
 //prettier-ignore
-const baseQueryWithReAuth: BaseQueryFnCustom = async (args, api , extraOptions) => {
+const baseQueryWithReAuth: BaseQueryFn = async (args, api , extraOptions) => {
 	try {
 		const result = await baseQuery(args, api, extraOptions)
 		//prettier-ignore

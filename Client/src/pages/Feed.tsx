@@ -7,9 +7,7 @@ import { RootState } from "../app/store"
 
 function Feed() {
 	const user = useAppSelector((state: RootState) => state.auth.user)
-	// if (name === null) {
-	// 	return <div>Loading...</div>
-	// }
+
 	// useEffect(() => {
 	// 	async function getFeed() {}
 	// 	getFeed()

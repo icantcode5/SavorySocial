@@ -28,7 +28,6 @@ function Login() {
 		try {
 			const response = await userLogin(userData).unwrap() //.unwrap() allows us access the payload or error of our mutation call
 			dispatch(setCredentials(response[0]))
-			console.log(response[0])
 			navigate("/feed")
 		} catch (error) {
 			//SET UP ERROR MESSAGES INCASE LOGIN FUNCTION DIDN'T WORK AND DISPLAY TO USER
