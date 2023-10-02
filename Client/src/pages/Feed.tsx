@@ -19,7 +19,35 @@ function Feed() {
 			<div className="text-center pb-3.5">
 				Welcome to your Feed page, {`${user.name}`}!
 			</div>
-			<div className="flex-column justify-center border-2 container mx-auto px-12 pt-3 max-w-3xl min-h-screen">
+			<div className="flex flex-col justify-center border-2 container mx-auto px-12 pt-3 max-w-3xl min-h-screen">
+				<form className="flex flex-col">
+					<label htmlFor="recipeName" className="pl-1 pb-1">
+						Recipe
+					</label>
+					<input
+						id="recipeName"
+						type="text"
+						className="rounded-md min-h-{10}"
+					/>
+					<label htmlFor="ingredients" className="pl-1 pb-1">
+						Ingredients
+					</label>
+					<input id="ingredients" type="text" className="rounded-md" />
+					<label htmlFor="directions" className="pl-1 pb-1">
+						Directions
+					</label>
+					<textarea
+						id="directions"
+						className="rounded-md "
+						rows={8}
+						autoCorrect="on"
+					/>
+					<label htmlFor="notes" className="pl-1 ">
+						Notes
+					</label>
+					<textarea id="notes" className="rounded-md mb-4" rows={6} />
+					<button className="rounded-md mb-8">Create New Post</button>
+				</form>
 				<Post />
 				<Post />
 				<Post />
