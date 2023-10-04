@@ -7,9 +7,17 @@ import { RootState } from "../app/store"
 import { RecipeFormSchema, RecipeFormType } from "../models/RecipePost"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import {
+	useAddRecipePostMutation,
+	useGetAllRecipePostsQuery,
+} from "../features/recipePosts/recipePostsApiSlice"
 
 function Feed() {
 	const user = useAppSelector((state: RootState) => state.auth.user)
+	const { data } = useGetAllRecipePostsQuery()
+	const [addRecipePost, { isLoading }] = useAddRecipePostMutation()
+
+	console.log(data)
 
 	const {
 		register,
@@ -20,9 +28,17 @@ function Feed() {
 	})
 
 	//CREATE FORM VALIDATON AND SCHEMAS TO MAKE SURE WE SANITIZE THE DATA COMING THROUGH THE FORM TO CREATE A POST
-	const formSubmit = async (recipeFormData: RecipeFormType): Promise<void> => {
+	const formSubmit = async (recipeFormData: object): Promise<void> => {
 		console.log(recipeFormData)
-		console.log("hello from recipe form")
+		try {
+			const response = await addRecipePost({
+				...recipeFormData,
+				user_id: user.user_id,
+			}).unwrap()
+			console.log(response)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	return (
@@ -41,9 +57,11 @@ function Feed() {
 						type="text"
 						className="rounded-md h-8 pl-1"
 						autoComplete="off"
-						{...register}
+						{...register("recipeName")}
 					/>
-					{errors.name && <span>{errors.name.message?.toString()}</span>}
+					{errors.recipeName && (
+						<span>{errors.recipeName.message?.toString()}</span>
+					)}
 					<label htmlFor="ingredients" className="pl-1 pb-1">
 						Ingredients
 					</label>
@@ -52,7 +70,7 @@ function Feed() {
 						className="rounded-md pl-1 resize-none overflow-hidden"
 						rows={6}
 						autoComplete="off"
-						{...register}
+						{...register("ingredients")}
 					/>
 					<label htmlFor="directions" className="pl-1 pb-1">
 						Directions
@@ -62,7 +80,7 @@ function Feed() {
 						className="rounded-md pl-1 resize-none overflow-hidden"
 						rows={8}
 						autoCorrect="on"
-						{...register}
+						{...register("directions")}
 					/>
 					<label htmlFor="notes" className="pl-1">
 						Notes
@@ -71,7 +89,7 @@ function Feed() {
 						id="notes"
 						className="rounded-md mb-4 pl-1 resize-none overflow-hidden"
 						rows={6}
-						{...register}
+						{...register("notes")}
 					/>
 					<button className="rounded-md mb-8">Create New Post</button>
 				</form>

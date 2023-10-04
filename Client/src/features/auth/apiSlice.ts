@@ -13,33 +13,33 @@ export const baseQuery: BaseQueryFn = fetchBaseQuery({
 })
 
 // Type for the custom base query function. This is the usual boiler plate code with undefined added
-type BaseQueryFnCustom<
-	Args = unknown,
-	Result = unknown,
-	Error = unknown,
-	DefintionExtraOptions = object
-	// Meta = object
-> = (
-	args: Args,
-	api: BaseQueryApi,
-	extraOptions: DefintionExtraOptions
-) => MaybePromise<QueryReturnValue<Result, Error>>
+// type BaseQueryFnCustom<
+// 	Args = unknown,
+// 	Result = unknown,
+// 	Error = unknown,
+// 	DefintionExtraOptions = object
+// 	// Meta = object
+// > = (
+// 	args: Args,
+// 	api: BaseQueryApi,
+// 	extraOptions: DefintionExtraOptions
+// ) => MaybePromise<QueryReturnValue<Result, Error>>
 
-//Common pattern in typescript for handling synchronous and asynchronous values
-type MaybePromise<T> = T | Promise<T>
+// //Common pattern in typescript for handling synchronous and asynchronous values
+// type MaybePromise<T> = T | Promise<T>
 
-type QueryReturnValue<
-	Data = unknown,
-	Error = unknown
-	// Meta = undefined | object
-> = {
-	data?: Data
-	error?: Error
-	isLoading: boolean
-	isSuccess: boolean
-	isError: boolean
-	// meta?: Meta
-}
+// type QueryReturnValue<
+// 	Data = unknown,
+// 	Error = unknown
+// 	// Meta = undefined | object
+// > = {
+// 	data?: Data
+// 	error?: Error
+// 	isLoading: boolean
+// 	isSuccess: boolean
+// 	isError: boolean
+// 	// meta?: Meta
+// }
 
 //Custom Query function syntax
 //prettier-ignore
@@ -91,7 +91,7 @@ const baseQueryWithReAuth: BaseQueryFn = async (args, api , extraOptions) => {
 export const apiSlice = createApi({
 	baseQuery: baseQueryWithReAuth as BaseQueryFn,
 	endpoints: (builder) => ({}),
-	tagTypes: ["userAuth"], // add the tagtype to reference in endpoints specifically used as mutations to delete cache and reload them to update them
+	tagTypes: ["userAuth", "recipeData"], // add the tagtype to reference in endpoints specifically used as mutations to delete cache and reload them to update them
 })
 
 //providesTags: [] is for queries as invalidatesTags:[] is for mutations!

@@ -54,8 +54,8 @@ export async function registerUser(request: Request, response: Response):Promise
 		const refreshToken = generateRefreshToken(userID)
 
 		const tokenQuery = "INSERT INTO refresh_tokens(refresh_token, user_id) VALUES ($1, $2)"
-		const tokenValue = [refreshToken, userID]
-		const addRefreshTokenToDB = await client.query(tokenQuery, tokenValue) //MAYBE SHOULD BE WRAPPED IN IF STATEMENT
+		const Addvalues = [refreshToken, userID]
+		const addRefreshTokenToDB = await client.query(tokenQuery, Addvalues) //MAYBE SHOULD BE WRAPPED IN IF STATEMENT
 		//Once the user has been created successfully, we use can now send the refresh token and access token to the http cookie header for authentication.
 		if(addRefreshTokenToDB){
 			response.cookie("accessToken" , accessToken , {

@@ -1,10 +1,11 @@
 import { Router } from "express"
 import protect from "../middleware/auth"
-import { getFeed } from "../controllers/feed"
+import { addRecipePost, getFeed } from "../controllers/feed"
 
 const router = Router()
 
 //rename get feed later
-router.get("/", protect, getFeed)
+router.get("/", getFeed)
+router.post("/addRecipePost", addRecipePost)
 
 export default router
