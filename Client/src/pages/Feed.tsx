@@ -1,6 +1,6 @@
 import Header from "../components/Header"
 import Post from "../components/Post"
-// import { useEffect } from "react"
+import { useEffect } from "react"
 // import { selectCurrentUser } from "../features/auth/authSlice"
 import { useAppSelector } from "../types/Redux.types"
 import { RootState } from "../app/store"
@@ -14,10 +14,13 @@ import {
 
 function Feed() {
 	const user = useAppSelector((state: RootState) => state.auth.user)
-	const { data } = useGetAllRecipePostsQuery()
 	const [addRecipePost, { isLoading }] = useAddRecipePostMutation()
 
+	const { data } = useGetAllRecipePostsQuery()
 	console.log(data)
+	useEffect(() => {
+		console.log("component did mount")
+	}, [])
 
 	const {
 		register,

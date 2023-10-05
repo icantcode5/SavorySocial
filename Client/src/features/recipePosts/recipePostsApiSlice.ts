@@ -13,7 +13,8 @@ export const recipePostsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getAllRecipePosts: builder.query<FinalType, void>({
 			query: () => "/api/feed",
-			keepUnusedDataFor: 60 * 5,
+			keepUnusedDataFor: 5,
+			providesTags: ["recipeData"],
 		}),
 		addRecipePost: builder.mutation({
 			query: (recipeData) => ({
