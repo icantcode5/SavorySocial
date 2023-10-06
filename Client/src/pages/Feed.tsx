@@ -1,7 +1,5 @@
 import Header from "../components/Header"
 import Post from "../components/Post"
-import { useEffect } from "react"
-// import { selectCurrentUser } from "../features/auth/authSlice"
 import { useAppSelector } from "../types/Redux.types"
 import { RootState } from "../app/store"
 import { RecipeFormSchema, RecipeFormType } from "../models/RecipePost"
@@ -16,11 +14,8 @@ function Feed() {
 	const user = useAppSelector((state: RootState) => state.auth.user)
 	const [addRecipePost, { isLoading }] = useAddRecipePostMutation()
 
-	const { data } = useGetAllRecipePostsQuery()
-	console.log(data)
-	useEffect(() => {
-		console.log("component did mount")
-	}, [])
+	const { data: recipePosts } = useGetAllRecipePostsQuery()
+	console.log(recipePosts)
 
 	const {
 		register,
@@ -38,11 +33,24 @@ function Feed() {
 				...recipeFormData,
 				user_id: user.user_id,
 			}).unwrap()
-			console.log(response)
 		} catch (error) {
 			console.log(error)
 		}
 	}
+
+	//Create feed IU to show recipe posts made by all other users
+	const recipePost = recipePosts?.map((recipePost) => {
+		return (
+			<Post
+				key={recipePost.post_id}
+				recipeName={recipePost.recipeName}
+				ingredients={recipePost.ingredients}
+				directions={recipePost.directions}
+				notes={recipePost.notes}
+				created_at={recipePost.created_at}
+			/>
+		)
+	})
 
 	return (
 		<>
@@ -96,10 +104,7 @@ function Feed() {
 					/>
 					<button className="rounded-md mb-8">Create New Post</button>
 				</form>
-				<Post />
-				<Post />
-				<Post />
-				<Post />
+				{recipePost}
 			</div>
 		</>
 	)

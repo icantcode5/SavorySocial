@@ -12,7 +12,7 @@ export async function getFeed(request:Request, response: Response) : Promise<voi
 	})
   try {
     client = await pool.connect()
-    const getAllRecipePostsQuery = "SELECT * FROM recipe_posts"
+    const getAllRecipePostsQuery = "SELECT * FROM recipe_posts ORDER BY created_at DESC"
 
     const allRecipePosts = await client.query(getAllRecipePostsQuery)
     console.log(allRecipePosts.rows)

@@ -5,13 +5,13 @@ interface RecipePostType {
 	ingredients: string
 	directions: string
 	notes: string
+	post_id: string
+	created_at: Date
 }
-
-type FinalType = RecipePostType[]
 
 export const recipePostsApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getAllRecipePosts: builder.query<FinalType, void>({
+		getAllRecipePosts: builder.query<RecipePostType[], void>({
 			query: () => "/api/feed",
 			keepUnusedDataFor: 5,
 			providesTags: ["recipeData"],
