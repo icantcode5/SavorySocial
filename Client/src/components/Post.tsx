@@ -1,12 +1,13 @@
 import PostsContainer from "./PostContainer"
 import { DateTimeFormatOptions } from "../types/RecipePost.types"
 import { useAppSelector } from "../types/Redux.types"
+
 interface Props {
 	recipeName: string
 	ingredients: string
 	directions: string
 	notes: string
-	created_at: Date
+	created_at: string
 }
 
 //prettier-ignore

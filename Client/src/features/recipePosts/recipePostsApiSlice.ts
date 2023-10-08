@@ -6,7 +6,7 @@ interface RecipePostType {
 	directions: string
 	notes: string
 	post_id: string
-	created_at: Date
+	created_at: string
 }
 
 export const recipePostsApiSlice = apiSlice.injectEndpoints({

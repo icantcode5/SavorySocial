@@ -1,6 +1,6 @@
 import Header from "../components/Header"
 import Post from "../components/Post"
-import { useAppSelector } from "../types/Redux.types"
+import { useAppSelector, useAppDispatch } from "../types/Redux.types"
 import { RootState } from "../app/store"
 import { RecipeFormSchema, RecipeFormType } from "../models/RecipePost"
 import { useForm } from "react-hook-form"
@@ -9,13 +9,16 @@ import {
 	useAddRecipePostMutation,
 	useGetAllRecipePostsQuery,
 } from "../features/recipePosts/recipePostsApiSlice"
+import { setRecipePosts } from "../features/recipePosts/recipePostsSlice"
 
 function Feed() {
 	const user = useAppSelector((state: RootState) => state.auth.user)
+	const dispatch = useAppDispatch()
 	const [addRecipePost, { isLoading }] = useAddRecipePostMutation()
 
+	//Set the redux state of recipePosts to all the recipe posts retrieved from the DB -- Isn't required ATM
 	const { data: recipePosts } = useGetAllRecipePostsQuery()
-	console.log(recipePosts)
+	recipePosts && dispatch(setRecipePosts(recipePosts))
 
 	const {
 		register,
@@ -27,12 +30,12 @@ function Feed() {
 
 	//CREATE FORM VALIDATON AND SCHEMAS TO MAKE SURE WE SANITIZE THE DATA COMING THROUGH THE FORM TO CREATE A POST
 	const formSubmit = async (recipeFormData: object): Promise<void> => {
-		console.log(recipeFormData)
 		try {
 			const response = await addRecipePost({
 				...recipeFormData,
 				user_id: user.user_id,
 			}).unwrap()
+			console.log(response)
 		} catch (error) {
 			console.log(error)
 		}
