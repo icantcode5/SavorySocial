@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit/react"
 
 type RecipePostType = {
-	recipeName: string
+	recipe_name: string
 	ingredients: string
 	directions: string
 	notes: string
@@ -12,7 +12,7 @@ type RecipePostType = {
 const initialState = {
 	recipePosts: [
 		{
-			recipeName: "",
+			recipe_name: "",
 			ingredients: "",
 			directions: "",
 			notes: "",
@@ -30,7 +30,6 @@ const recipePostsSlice = createSlice({
 		//prettier-ignore
 		setRecipePosts: (state, action : PayloadAction<RecipePostType[]>) => {
 			state.recipePosts = action.payload
-			console.log(action.payload)
 		},
 	},
 })

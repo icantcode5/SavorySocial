@@ -8,13 +8,15 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import {
 	useAddRecipePostMutation,
 	useGetAllRecipePostsQuery,
+	useDeleteRecipePostMutation,
 } from "../features/recipePosts/recipePostsApiSlice"
 import { setRecipePosts } from "../features/recipePosts/recipePostsSlice"
 
 function Feed() {
 	const user = useAppSelector((state: RootState) => state.auth.user)
 	const dispatch = useAppDispatch()
-	const [addRecipePost, { isLoading }] = useAddRecipePostMutation()
+	const [addRecipePost] = useAddRecipePostMutation()
+	const [deleteRecipePost] = useDeleteRecipePostMutation()
 
 	//Set the redux state of recipePosts to all the recipe posts retrieved from the DB -- Isn't required ATM
 	const { data: recipePosts } = useGetAllRecipePostsQuery()
@@ -41,16 +43,28 @@ function Feed() {
 		}
 	}
 
+	//Delete Post function
+	const deleteRecipePostById = async (id: string) => {
+		try {
+			const response = await deleteRecipePost(id) // only need to await if there are any subsequent actions I want to fire off, if not then we can just call the deleteRecipePost function synchronously
+			console.log(response)
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	//Create feed IU to show recipe posts made by all other users
 	const recipePost = recipePosts?.map((recipePost) => {
 		return (
 			<Post
 				key={recipePost.post_id}
-				recipeName={recipePost.recipeName}
+				recipeName={recipePost.recipe_name}
 				ingredients={recipePost.ingredients}
 				directions={recipePost.directions}
 				notes={recipePost.notes}
-				created_at={recipePost.created_at}
+				createdAt={recipePost.created_at}
+				postId={recipePost.post_id}
+				handleDelete={deleteRecipePostById}
 			/>
 		)
 	})

@@ -47,3 +47,28 @@ export async function addRecipePost(request : Request, response: Response): Prom
     client?.release()
   }
 }
+
+//prettier-ignore
+export async function deleteRecipePost(request:Request, response:Response): Promise<void>{
+  const { id} = request.params
+  console.log(id)
+  let client
+
+  const pool = new Pool({
+		connectionString: process.env.DB_CONNECTION_STRING,
+	})
+  try {
+    client = await pool.connect()
+
+    const deleteRecipePostQuery = "DELETE FROM recipe_posts WHERE post_id=$1"
+    const value = [id]
+
+    const deleteRecipePost = await client.query(deleteRecipePostQuery, value)
+    response.send({message : "Successfully deleted recipe post!"})
+
+  } catch (error) {
+    console.log(error)
+  }finally{
+    client?.release()
+  }
+}

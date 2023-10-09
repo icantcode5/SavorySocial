@@ -1,7 +1,7 @@
 import { apiSlice } from "../auth/apiSlice"
 
 interface RecipePostType {
-	recipeName: string
+	recipe_name: string
 	ingredients: string
 	directions: string
 	notes: string
@@ -24,8 +24,18 @@ export const recipePostsApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ["recipeData"],
 		}),
+		deleteRecipePost: builder.mutation({
+			query: (id) => ({
+				url: `/api/feed/deleteRecipePost${id}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: ["recipeData"],
+		}),
 	}),
 })
 
-export const { useGetAllRecipePostsQuery, useAddRecipePostMutation } =
-	recipePostsApiSlice
+export const {
+	useGetAllRecipePostsQuery,
+	useAddRecipePostMutation,
+	useDeleteRecipePostMutation,
+} = recipePostsApiSlice
