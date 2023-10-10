@@ -3,7 +3,6 @@ import cors from "cors"
 import path from "path"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
-import { Pool } from "pg"
 
 //Routes
 import userRoutes from "./routes/user"
@@ -18,20 +17,6 @@ app.use(cors({ credentials: true, origin: "http://localhost:5173" })) //Have to 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-//DB connection
-// const databaseConnection = async () => {
-// 	const pool = new Pool({
-// 		connectionString: process.env.DB_CONNECTION_STRING,
-// 	})
-// 	try {
-// 		await pool.connect()
-// 		console.log("Connected to DB")
-// 	} catch (error) {
-// 		console.log("Error connecting to DB", error)
-// 		process.exit(1)
-// 	}
-// }
-// databaseConnection()
 //Serve Client files when running in production
 if (process.env.NODE_ENV === "production") {
 	app.get("*", (req, res) => {
