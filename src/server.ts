@@ -19,19 +19,19 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 //DB connection
-const databaseConnection = async () => {
-	const pool = new Pool({
-		connectionString: process.env.DB_CONNECTION_STRING,
-	})
-	try {
-		await pool.connect()
-		console.log("Connected to DB")
-	} catch (error) {
-		console.log("Error connecting to DB", error)
-		process.exit(1)
-	}
-}
-databaseConnection()
+// const databaseConnection = async () => {
+// 	const pool = new Pool({
+// 		connectionString: process.env.DB_CONNECTION_STRING,
+// 	})
+// 	try {
+// 		await pool.connect()
+// 		console.log("Connected to DB")
+// 	} catch (error) {
+// 		console.log("Error connecting to DB", error)
+// 		process.exit(1)
+// 	}
+// }
+// databaseConnection()
 //Serve Client files when running in production
 if (process.env.NODE_ENV === "production") {
 	app.get("*", (req, res) => {

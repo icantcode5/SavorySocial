@@ -34,17 +34,6 @@ function Header() {
 				</h1>
 				<div className="">
 					<ul className=" flex justify-between">
-						<li className="mr-2.5">
-							<Link className="text-white" to="/login">
-								Login
-							</Link>
-						</li>
-						<li className="mr-2.5">
-							<Link className="text-white" to="/register">
-								Register
-							</Link>
-						</li>
-
 						{
 							//prettier-ignore
 							user.user_id ? <li
@@ -52,7 +41,18 @@ function Header() {
 						onClick={logOutUser}
 					>
 						Logout
-					</li> : ""
+					</li> : <><li className="mr-2.5">
+							<Link className="text-white" to="/login">
+								Login
+							</Link>
+						</li>
+
+						<li className="mr-2.5">
+							<Link className="text-white" to="/register">
+								Register
+							</Link>
+						</li> 
+						</>
 						}
 					</ul>
 				</div>
