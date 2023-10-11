@@ -27,7 +27,6 @@ export async function registerUser(request: Request, response: Response):Promise
 		const userQuery = "SELECT * FROM users WHERE email = $1"
 		const values = [email]
 		const userExists = await client.query(userQuery, values)
-		console.log(userExists)
 
 		//Since postgresql will return a truthy statement for the response we get from querying the db, we have to check the specific information we get back which in our case is the table and the information inside that table ergo array of objects.
 		if(userExists.rows[0]){
@@ -88,8 +87,6 @@ export async function registerUser(request: Request, response: Response):Promise
 export async function loginUser(request: Request, response: Response): Promise<void> {
 	const { email, password } = request.body
 	let client
-	console.log(email)
-	console.log(password)
 
 	const pool = new Pool({
 		connectionString: process.env.DB_CONNECTION_STRING,

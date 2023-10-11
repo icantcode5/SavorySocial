@@ -1,12 +1,20 @@
 import { Pool } from "pg"
+import {
+	DB_DB,
+	DB_HOST,
+	DB_PASSWORD,
+	DB_USERNAME,
+	DB_PORT,
+	DB_MAX_CONNECTIONS,
+} from "../types/dotenv.types"
 
 const pool = new Pool({
-	user: process.env.DB_USERNAME || "",
-	host: process.env.DB_HOST || "",
-	database: process.env.DB_DB || "",
-	password: String(process.env.DB_PASSWORD) as string,
-	port: parseInt(process.env.DB_PORT || "5432", 10), // your PostgreSQL port
-	max: Number(process.env.DB_MAX_CONNECTIONS), // adjust this value based on your requirements
+	user: DB_USERNAME,
+	host: DB_HOST,
+	database: DB_DB,
+	password: DB_PASSWORD,
+	port: Number(DB_PORT), // your PostgreSQL port
+	max: Number(DB_MAX_CONNECTIONS), // adjust this value based on your requirements
 })
 
 export { pool }

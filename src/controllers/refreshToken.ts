@@ -1,9 +1,6 @@
-import {
-	generateAccessToken,
-	generateRefreshToken,
-} from "../utils/generateTokens"
+import { generateAccessToken } from "../utils/generateTokens"
 import { Request, Response } from "express"
-import jwt, { JwtPayload } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import { Pool } from "pg"
 
 //CHANGE TO GETNEWACCESSTOKEN SINCE WE ARE ONLY HITTING THIS ROUTE ONCE OUR ACCESS TOKEN HAS EXPIRED WHILE OUR REFRESH TOKEN IS STILL ACTIVE

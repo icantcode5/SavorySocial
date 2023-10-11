@@ -22,6 +22,7 @@ export async function getFeed(request:Request, response: Response) : Promise<voi
 export async function addRecipePost(request : Request, response: Response): Promise<void> {
   const {recipeName, ingredients, directions, notes, user_id} = request.body
   const client = await pool.connect()
+  console.log("adding recipe post....")
 
   try {
     const addRecipePostQuery = "INSERT INTO recipe_posts(recipe_name, ingredients, directions, notes, user_id) VALUES ($1,$2,$3,$4,$5) RETURNING *"
