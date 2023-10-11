@@ -23,7 +23,7 @@ export const DB_PASSWORD = validateEnvVariable(
 	process.env.DB_PASSWORD,
 	"DB_PASSWORD"
 )
-export const DB_PORT = validateEnvVariable(process.env.PORT, "DB_PORT")
+export const DB_PORT = validateEnvVariable(process.env.DB_PORT, "DB_PORT")
 export const DB_MAX_CONNECTIONS = validateEnvVariable(
 	process.env.DB_MAX_CONNECTIONS,
 	"MAX_CONNECTIONS"
