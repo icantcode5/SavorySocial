@@ -33,10 +33,7 @@ function Feed() {
 	//CREATE FORM VALIDATON AND SCHEMAS TO MAKE SURE WE SANITIZE THE DATA COMING THROUGH THE FORM TO CREATE A POST
 	const formSubmit = async (recipeFormData: object): Promise<void> => {
 		try {
-			const response = await addRecipePost({
-				...recipeFormData,
-				user_id: user.user_id,
-			}).unwrap()
+			const response = await addRecipePost(recipeFormData).unwrap()
 			console.log(response)
 		} catch (error) {
 			console.log(error)

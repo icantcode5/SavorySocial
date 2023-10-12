@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { pool } from "../config/database"
+import { CustomRequest } from "../middleware/auth"
 
 //prettier-ignore
 export async function getFeed(request:Request, response: Response) : Promise<void>{
@@ -19,10 +20,11 @@ export async function getFeed(request:Request, response: Response) : Promise<voi
 }
 
 //prettier-ignore
-export async function addRecipePost(request : Request, response: Response): Promise<void> {
-  const {recipeName, ingredients, directions, notes, user_id} = request.body
+export async function addRecipePost(request : CustomRequest, response: Response): Promise<void> {
+  const {recipeName, ingredients, directions, notes} = request.body
+  //Added user_id to middleware function to authenticate current user before allowing to hit API
+  const user_id = request.userId
   const client = await pool.connect()
-  console.log("adding recipe post....")
 
   try {
     const addRecipePostQuery = "INSERT INTO recipe_posts(recipe_name, ingredients, directions, notes, user_id) VALUES ($1,$2,$3,$4,$5) RETURNING *"
@@ -40,7 +42,7 @@ export async function addRecipePost(request : Request, response: Response): Prom
 
 //prettier-ignore
 export async function deleteRecipePost(request:Request, response:Response): Promise<void>{
-  const { id} = request.params
+  const { id } = request.params
   const client = await pool.connect()
 
   try {
@@ -48,7 +50,9 @@ export async function deleteRecipePost(request:Request, response:Response): Prom
     const value = [id]
 
     const deleteRecipePost = await client.query(deleteRecipePostQuery, value)
-    response.send({message : "Successfully deleted recipe post!"})
+    if(deleteRecipePost){
+      response.send({message : "Successfully deleted recipe post!"})
+    }
   } catch (error) {
     console.log(error)
   }finally{

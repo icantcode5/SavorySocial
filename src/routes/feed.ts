@@ -5,8 +5,8 @@ import { addRecipePost, deleteRecipePost, getFeed } from "../controllers/feed"
 const router = Router()
 
 //rename get feed later
-router.get("/", getFeed)
-router.post("/addRecipePost", addRecipePost)
-router.delete("/deleteRecipePost:id", deleteRecipePost)
+router.get("/", protect, getFeed)
+router.post("/addRecipePost", protect, addRecipePost)
+router.delete("/deleteRecipePost:id", protect, deleteRecipePost)
 
 export default router
